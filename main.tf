@@ -115,25 +115,13 @@ resource "aws_nat_gateway" "nat_gateway" {
     Name = "demo_nat_gateway"
   }
 }
-resource "aws_s3_bucket" "example" {
-  bucket = "mybucket"
-}
+resource "aws_instance" "web" {
+  ami           = "ami-0c101f26f147fa7fd"
 
-resource "aws_s3_bucket_versioning" "example" {
-  bucket = aws_s3_bucket.example.id
+  instance_type = "t2.micro"
+  count = 10
 
-  versioning_configuration {
-    status = "Enabled"
-  }
-}
-
-resource "aws_s3_bucket_object_lock_configuration" "example" {
-  bucket = aws_s3_bucket.example.id
-
-  rule {
-    default_retention {
-      mode = "COMPLIANCE"
-      days = 5
-    }
+  tags = {
+    Name = "HelloWorld"
   }
 }
